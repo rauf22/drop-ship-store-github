@@ -34,7 +34,8 @@ def get_url():
             raise ScrapingOtherError(f'{e}')
 
         if response.status_code != 200:
-            raise ScrapingHTTPError(f"HTTP {response.status_code}: {response.text}")
+            raise ScrapingHTTPError(
+                f"HTTP {response.status_code}:{response.text}")
 
         soup = BeautifulSoup(response.text, "lxml")  # html.parser
         data = soup.find_all("div", class_="col-lg-4 col-md-6 mb-4")
@@ -53,8 +54,8 @@ def array():
         name = data.find("h3", class_="card-title").text
         price = data.find("h4").text.replace("$", "")
         text = data.find("p", class_="card-text").text
-        url_img = "https://scrapingclub.com" + data.find("img",
-                                                         class_="card-img-top img-fluid").get("src")
+        url_img = "https://scrapingclub.com" + \
+                  data.find("img", class_="card-img-typing-fluid").get("src")
         print(name + "\n" + price + "\n" + text + "\n" + url_img + "\n\n")
         if not Product.objects.filter(name=name).exists():
             Product.objects.create(

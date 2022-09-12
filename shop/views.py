@@ -16,7 +16,8 @@ def fill_database(request):
             array()
         except ScrapingError as err:
             print(str(err))
-            return render(request, "shop/fill-products.html", {"message": str(err)})
+            return render(request, "shop/fill-products.html",
+                          {"message": str(err)})
 
     return render(request, "shop/fill-products.html", {"message": None})
 

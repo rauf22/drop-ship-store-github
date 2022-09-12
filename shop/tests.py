@@ -184,7 +184,8 @@ class TestDataBase(TestCase):
     """
         Order.objects.all().delete()
         cart = Order.get_cart(self.user)
-        OrderItem.objects.create(order=cart, product=self.p, price=2, quantity=2)
+        OrderItem.objects.create(order=cart, product=self.p, price=2,
+                                 quantity=2)
         self.assertEqual(Payment.get_balance(self.user), Decimal(0))
         cart.make_order()
         self.assertEqual(Payment.get_balance(self.user), Decimal(0))
@@ -195,7 +196,8 @@ class TestDataBase(TestCase):
     """
         Order.objects.all().delete()
         cart = Order.get_cart(self.user)
-        OrderItem.objects.create(order=cart, product=self.p, price=2, quantity=1000)
+        OrderItem.objects.create(order=cart, product=self.p, price=2,
+                                 quantity=1000)
         cart.make_order()
         self.assertEqual(Payment.get_balance(self.user), Decimal(0))
 
@@ -217,7 +219,8 @@ class TestDataBase(TestCase):
      - and balance must be 0+1000-556
      """
         cart = Order.get_cart(self.user)
-        OrderItem.objects.create(order=cart, product=self.p, price=2, quantity=500)
+        OrderItem.objects.create(order=cart, product=self.p,
+                                 price=2, quantity=500)
         Payment.objects.create(user=self.user, amount=1000)
         self.assertEqual(Payment.get_balance(self.user), Decimal(1000))
         amount = Order.get_amount_of_unpaid_orders(self.user)
@@ -229,7 +232,8 @@ class TestDataBase(TestCase):
      - all orders must be paid
     """
         cart = Order.get_cart(self.user)
-        OrderItem.objects.create(order=cart, product=self.p, price=2, quantity=500)
+        OrderItem.objects.create(order=cart, product=self.p,
+                                 price=2, quantity=500)
         Payment.objects.create(user=self.user, amount=10000)
         self.assertEqual(Payment.get_balance(self.user), Decimal(10000))
         amount = Order.get_amount_of_unpaid_orders(self.user)

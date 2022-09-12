@@ -3,16 +3,21 @@ from decimal import Decimal
 from django.contrib.auth.models import User
 from django.db import models, transaction
 from django.db.models import Sum
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save,\
+    post_delete
 from django.dispatch import receiver
 from django.utils import timezone
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Наименование продукта')
-    code = models.CharField(max_length=255, verbose_name='Код продукта')
-    price = models.DecimalField(max_digits=20, decimal_places=2)
-    unit = models.CharField(max_length=255, blank=True, null=True)
+    name = models.CharField(max_length=255,
+                            verbose_name='Наименование продукта')
+    code = models.CharField(max_length=255,
+                            verbose_name='Код продукта')
+    price = models.DecimalField(max_digits=20,
+                                decimal_places=2)
+    unit = models.CharField(max_length=255,
+                            blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
     note = models.TextField(blank=True, null=True)
 
@@ -69,7 +74,6 @@ class Order(models.Model):
     def __str__(self):
         return f'{self.user} - {self.amount} - {self.status}'
 
-
     @staticmethod
     def get_cart(user: User):
         cart = Order.objects.filter(user=user,
@@ -97,10 +101,10 @@ class Order(models.Model):
             self.save()
             auto_payment_unpaid_orders(self.user)
 
-
     @staticmethod
     def get_amount_of_unpaid_orders(user: User):
-        amount = Order.objects.filter(user=user, status=Order.STATUS_WAITING_FOR_PAYMENT,
+        amount = Order.objects.filter(user=user,
+                                      status=Order.STATUS_WAITING_FOR_PAYMENT,
                                       ).aggregate(Sum('amount'))['amount__sum']
         return amount or Decimal(0)
 
@@ -117,7 +121,6 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f'{self.product} - {self.price}'
-
 
     @property
     def amount(self):
@@ -144,7 +147,8 @@ def recalculate_order_amount_after_save(sender, instance, **kwargs):  # instance
 
 
 @receiver(post_delete, sender=OrderItem)
-def recalculate_order_amount_after_delete(sender, instance, **kwargs):  # instance это OrderItem
+def recalculate_order_amount_after_delete(sender,
+                                          instance, **kwargs):  # instance это OrderItem
     order = instance.order
     order.amount = order.get_amount()
     order.save()
