@@ -41,7 +41,6 @@ class Payment(models.Model):
     def __str__(self):
         return f'{self.user} - {self.amount}'
 
-
     @staticmethod
     def get_balance(user: User):
         amount = Payment.objects.filter(user=user).aggregate(
@@ -129,7 +128,8 @@ class OrderItem(models.Model):
 
 @transaction.atomic()
 def auto_payment_unpaid_orders(user: User):
-    unpaid_orders = Order.objects.filter(user=user, status=Order.STATUS_WAITING_FOR_PAYMENT)
+    unpaid_orders = Order.objects.filter(
+        user=user,status=Order.STATUS_WAITING_FOR_PAYMENT)
     for order in unpaid_orders:
         if Payment.get_balance(user) < order.amount:
             break
@@ -140,15 +140,16 @@ def auto_payment_unpaid_orders(user: User):
 
 
 @receiver(post_save, sender=OrderItem)
-def recalculate_order_amount_after_save(sender, instance, **kwargs):  # instance это OrderItem
+def recalculate_order_amount_after_save(sender,
+                                        instance, **kwargs):  # instance это OrderItem
     order = instance.order
     order.amount = order.get_amount()
     order.save()
 
 
 @receiver(post_delete, sender=OrderItem)
-def recalculate_order_amount_after_delete(sender,
-                                          instance, **kwargs):  # instance это OrderItem
+def recalculate_order_amount_after_delete(
+        sender, instance, **kwargs):  # instance это OrderItem
     order = instance.order
     order.amount = order.get_amount()
     order.save()
