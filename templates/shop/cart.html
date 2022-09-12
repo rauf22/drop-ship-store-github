@@ -1,0 +1,58 @@
+{% extends 'base-page.html' %}
+{% load static %}
+
+{% block title %}
+  Fill Products
+{% endblock title %}
+
+{% block container %}
+
+{% for item in items %}
+
+    <table class="table">
+        <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <th>{{ item.product }}</th>
+            <th>{{ item.quantity }}</th>
+            <th>{{ item.price }}</th>
+            <th>{{ item.amount }}</th>
+            <th>
+                <div class="col-12 col-md-1 item">
+                    <form method="post" action="{% url 'cart_delete_item' item.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" style="color: green"><u>delete</u></button>
+                    </form>
+                </div>
+            </th>
+        </tr>
+
+    </table>
+
+{% endfor %}
+
+<hr class="hr"/>
+<div class="row" >
+    <div class="col-12 col-md-7 item"></div>
+    <div class="col-12 col-md-2 item">Total amount</div>
+    <div class="col-12 col-md-2 item">{{ cart.amount }}</div>
+</div>
+<hr class="hr"/>
+
+<div class="row" >
+    <div class="col-12 col-md-7 item"></div>
+    <div class="col-12 col-md-2 item">
+        <a class="contactus-bar-btn f_right" href="{% url 'make_order' %}">
+            Process to Payment
+        </a>
+    </div>
+</div>
+{% endblock container %}
+
+
+

@@ -1,0 +1,54 @@
+{% extends 'base-page.html' %}
+{% load static %}
+
+{% block title %}
+  Log in
+{% endblock title %}
+
+{% block container %}
+
+<div class="gtco-section">
+  <div class="gtco-container">
+    <div class="row row-pb-md">
+      <div class="col-md-6 animate-box">
+        <h3>Login</h3>
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-12">
+              <h2>{{ attention }}</h2>
+            </div>
+          </div>
+          {% for error in login_form.non_field_errors %}
+          <div class="row">
+            <div class="col-md-12">
+              <h2>{{ error }}</h2>
+            </div>
+          </div>
+          {% endfor %}
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label class="sr-only" for="id_username">Login</label>
+              <input type="text" class="form-control" placeholder="Your login"
+                      id="id_username" name="username" required>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label class="sr-only" for="id_password">Password</label>
+              <input type="password" class="form-control" placeholder="Password"
+                      id="id_password" name="password" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="submit" value="Send Message" class="btn btn-primary btn-lg">
+          </div>
+        </form>		
+      </div>
+      <div class="col-md-5 col-md-push-1 animate-box">
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+{% endblock container %}

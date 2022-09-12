@@ -1,0 +1,39 @@
+{% extends 'base-page.html' %}
+{% load static %}
+
+{% block title %}
+  Register
+{% endblock title %}
+
+{% block container %}
+
+<div class="gtco-section">
+  <div class="gtco-container">
+    <div class="row row-pb-md">
+      <div class="col-md-6 animate-box">
+        <h3>Register</h3>
+        <form method="post" action="{% url 'register' %}">
+          {% csrf_token %}
+
+          {% for field in user_form %}
+            <div class="row form-group">
+              <div class="col-md-12">
+                <span style="color: red">{{ field.errors }}</span>
+                {{ field.label_tag }}
+                {{ field }}
+              </div>
+            </div>
+          {% endfor %}
+
+          <div class="form-group">
+            <input type="submit" value="Send Message" class="btn btn-primary btn-lg">
+          </div>
+        </form>		
+      </div>
+      <div class="col-md-5 col-md-push-1 animate-box">
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+{% endblock container %}
