@@ -7,10 +7,10 @@ jobs:
   run_tests:
     runs-on: [ubuntu-latest]
     steps:
-      -uses: actions/checkout@main
-      -uses: actions/setup-python@v1
-      with:
+      - uses: actions/checkout@main
+      - uses: actions/setup-python@v1
+        with:
         python-version: 3.9
         architecture: 'X64'
-      -name: Tests
-      run: python manage.py test
+      - name: Tests
+        run: python manage.py test
