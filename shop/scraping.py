@@ -70,4 +70,3 @@ def array():
 
 if __name__ == '__main__':
     array()
-
