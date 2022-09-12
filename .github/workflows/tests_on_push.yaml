@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@main
       - uses: actions/setup-python@v1
         with:
-        python-version: 3.6.9
-        architecture: 'x64'
+          python-version: 3.6.9
+          architecture: 'x64'
       - name: Tests
         run: python manage.py test
